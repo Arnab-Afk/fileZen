@@ -48,6 +48,9 @@ export const metadata = {
 }
 
 export default function Signin() {
+  const onSignIn = () => {
+    window.location.href = 'https://small-mouse-2759.arnabbhowmik019.workers.dev/google/auth?redirect_url=http://localhost:5173/auth';
+  }
   return (
     <main className="overflow-hidden bg-gray-50">
           <GradientBackground />
@@ -82,8 +85,8 @@ export default function Signin() {
                 Forgot password?
               </Link> */}
             </div>
-            <div className="mt-8">
-              <Button type="submit" className="w-full">
+            <div className="mt-8" onClick={onSignIn}>
+              <Button  className="w-full">
                 Sign in with Google
               </Button>
             </div>
