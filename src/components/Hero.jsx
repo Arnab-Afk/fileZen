@@ -1,45 +1,68 @@
-import { FaPlus } from "react-icons/fa";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
-const collections = [
-  { name: "Fiction", books: 12, color: "bg-blue-600" },
-  { name: "Non-Fiction", books: 8, color: "bg-green-600" },
-  { name: "Science", books: 15, color: "bg-purple-600" },
-  { name: "History", books: 10, color: "bg-yellow-600" },
-  { name: "Biography", books: 6, color: "bg-pink-600" },
-];
 
-const Collections = () => {
+
+
+
+import { clsx } from 'clsx'
+
+// eslint-disable-next-line react/prop-types
+export function Container({ className, children }) {
   return (
-    <div className="p-8 bg-[#0f172a] min-h-screen">
-      <h2 className="text-white text-4xl font-bold mb-8">My Collections</h2>
-
-      {/* Responsive Grid Layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 justify-center items-center">
-        {collections.map((collection, index) => (
-          <div
-            key={index}
-            className="bg-[#1e293b] p-6 rounded-xl shadow-lg w-[320px] h-[180px] flex flex-col justify-between transition transform hover:scale-105"
-          >
-            <div>
-              <h3 className="text-white text-xl font-semibold">{collection.name}</h3>
-              <p className="text-gray-400 mt-1">📖 {collection.books} books</p>
-            </div>
-            <button
-              className={`text-white px-5 py-2 rounded-lg ${collection.color} hover:opacity-80`}
-            >
-              View all books &gt;
-            </button>
-          </div>
-        ))}
-
-        {/* Create New Collection Card */}
-        <div className="bg-[#1e293b] p-6 rounded-xl shadow-lg w-[320px] h-[180px] flex flex-col items-center justify-center text-gray-400 hover:text-gray-200 cursor-pointer transition transform hover:scale-105">
-          <FaPlus className="text-3xl mb-2" />
-          <p className="text-lg">Create new collection</p>
-        </div>
-      </div>
+    <div className={clsx(className, 'px-6 lg:px-8')}>
+      <div className="mx-auto max-w-2xl lg:max-w-7xl">{children}</div>
     </div>
-  );
-};
+  )
+}
+
+function Collections() {
+  const { collections } = useContext(AppContext);
+
+  console.log('Collections:', collections);
+  return (
+    <div className="mt-16 bg-gradient-to-t from-gray-100 pb-14">
+      <Container>
+        <h2 className="text-2xl font-medium tracking-tight">Featured</h2>
+        <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {collections.map((collection , CollectionID) => (
+            <div
+              key={CollectionID}
+              className="relative flex flex-col rounded-3xl bg-white p-2 shadow-md shadow-black/5 ring-1 ring-black/5"
+            >
+              {collection.CollectionImageURL && (
+                <img
+                  src={`${collection.CollectionImageURL}?w=1170&h=780`}
+                  alt={collection.CollectionName}
+                  className="w-full h-48 object-cover rounded-t-3xl"
+                />
+              )}
+              <div className="flex flex-1 flex-col p-8">
+                <div className="text-sm/5 text-gray-700">
+                {new Date(collection.CreationDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })} 
+                </div>
+                <div className="mt-2 text-base/7 font-medium">
+                  <a href={`/collections/${collection.CollectionID}`}>
+                    <span className="absolute inset-0" />
+                    {collection.CollectionName}
+                  </a>
+                </div>
+                <div className="mt-2 flex-1 text-sm/6 text-gray-500">
+                  {collection.Description}
+                </div>
+                
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </div>
+  )
+}
+
 
 export default Collections;

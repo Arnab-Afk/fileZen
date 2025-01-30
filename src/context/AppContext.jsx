@@ -15,6 +15,20 @@ export const AppProvider = ({ children }) => {
     if (storedUser) {
       setUser(storedUser);
     }
+
+    const fetchCollections = async () => {
+      try {
+        const response = await fetch('https://filedrice.arnabbhowmik019.workers.dev/public/collections');
+        const data = await response.json();
+        console.log(response);
+        setCollections(data);
+      } catch (error) {
+        console.error('Error fetching collections:', error);
+      }
+    };
+
+    fetchCollections();
+
   }, []);
 
   return (
